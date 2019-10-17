@@ -86,9 +86,9 @@ class MainActivity : AppCompatActivity() {
 
     private inline fun <reified T: MarineMammal> setTitleForType(mammalList: List<T>){
         when {
-            Whale("whale") is T -> this.title = "Whales"
-            Dolphin ("dolphin") is T -> this.title = "Dolphins"
-            Otter("otter") is T -> this.title = "Otters"
+            mammalList[0] is Whale -> this.title = "Whales"
+            mammalList[0] is Dolphin -> this.title = "Dolphins"
+            mammalList[0] is Otter -> this.title = "Otters"
         }
     }
 }

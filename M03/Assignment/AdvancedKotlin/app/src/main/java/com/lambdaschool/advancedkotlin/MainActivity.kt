@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
             is Dance -> dance
         }
         recyclerView.adapter = SongListAdapter(data)
+        setTitleForType(data)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +77,16 @@ class MainActivity : AppCompatActivity() {
             setHasFixedSize(false)
             layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
             adapter = SongListAdapter(data)
+        }
+    }
+
+    private inline fun <reified T: Song> setTitleForType(song:List<T>) {
+        when {
+            data[0] is RBHipHop -> this.title = "R&B/Hip-Hop"
+            data[0] is Pop -> this.title = "Pop"
+            data[0] is Country -> this.title = "Country"
+            data[0] is Rock -> this.title = "Rock"
+            data[0] is Dance -> this.title = "Dance"
         }
     }
 

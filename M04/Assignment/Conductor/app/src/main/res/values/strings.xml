@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Conductor</string>
+    <string name="sub_one">Sub One</string>
+    <string name="sub_two">Sub Two</string>
 </resources>

@@ -4,17 +4,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import com.bluelinelabs.conductor.ControllerChangeHandler
 import com.bluelinelabs.conductor.ControllerChangeType
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.lambdaschool.conductor.R
+import kotlinx.android.synthetic.main.root_controller_layout.view.*
 
-class RootController: BaseController() {
+class FirstController: BaseController(), SecondController.SecondContainer {
+
+    var text: String? = null
+
+    override fun generateNumber(int: Int) {
+        text = "$int"
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.root_controller_layout, container, false)
-        view.findViewById<TextView>(R.id.text_view).text = "Root Controller"
+        view.text_view.text = if (text.isNullOrEmpty()){
+            "First Controller"
+        } else {
+            "First Controller\nGenerated Number: $text"
+        }
         return view
     }
 
@@ -23,22 +34,16 @@ class RootController: BaseController() {
         changeType: ControllerChangeType
     ) {
         super.onChangeEnded(changeHandler, changeType)
-
-        view?.findViewById<Button>(R.id.btn_sub_two)?.setOnClickListener {
-            router.pushController(
-                RouterTransaction.with(FirstController())
-                    .pushChangeHandler(HorizontalChangeHandler())
-                    .popChangeHandler(HorizontalChangeHandler())
+        val next = view?.findViewById<Button>(R.id.btn_sub_two)
+        next?.setOnClickListener {
+            router.pushController(RouterTransaction.with(SecondController(this))
+                .pushChangeHandler(HorizontalChangeHandler())
+                .popChangeHandler(HorizontalChangeHandler())
             )
         }
 
-        val prevButton = view?.findViewById<Button>(R.id.btn_sub_one)
-        if (router.backstackSize <= 1) {
-            prevButton?.visibility = View.GONE
-        } else {
-            prevButton?.setOnClickListener {
-                router.popCurrentController()
-            }
+        view?.findViewById<Button>(R.id.btn_sub_one)?.setOnClickListener {
+            router.popCurrentController()
         }
     }
 }
